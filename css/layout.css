@@ -17,6 +17,7 @@ html {
 
 .row {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .column-full,
