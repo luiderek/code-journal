@@ -11,7 +11,7 @@ $photoURL.addEventListener('input', function (e) {
 
 const $entryForm = document.querySelector('div[data-view=entry-form] > form');
 $entryForm.addEventListener('submit', function (e) {
-  e.preventDefault(); // prevent refresh?
+  e.preventDefault();
   const entryObj = {
     title: e.target.title.value,
     photoURL: e.target.photoURL.value,
@@ -25,13 +25,3 @@ $entryForm.addEventListener('submit', function (e) {
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
 });
-
-// const log = v => {
-//   var varName = (v).toString().replace(/[ |\(\)=>]/g, '');
-//   var varValue = (v)();
-//   console.log(varName + ':', varValue);
-// };
-
-// log(() => TARGET);
-
-// saving entries to local storage on reload

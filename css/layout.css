@@ -4,10 +4,12 @@
 
 html {
   background-color: #e5e5e5;
+  margin: 0;
 }
 
 .container {
   max-width: 575px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 0 1.5rem;
   background-color: #f0f0f0;
@@ -15,7 +17,6 @@ html {
 
 .row {
   display: flex;
-  flex-wrap: wrap;
 }
 
 .column-full,
@@ -23,24 +24,9 @@ html {
   width: 100%;
 }
 
-.container > header {
-  background-color: #562b81;
-  color: white;
-}
-
-img {
-  max-height: 30vh;
-  width: 100%;
-}
-
-input,
-textarea {
-  width: 100%;
-}
-
-.entry-save {
-  background-color: #562b81;
-  color: white;
+.justify-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media screen and (min-width: 768px) {
