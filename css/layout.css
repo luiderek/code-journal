@@ -2,10 +2,15 @@
   display: none !important;
 }
 
+html {
+  background-color: #e5e5e5;
+}
+
 .container {
   max-width: 575px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  background-color: #f0f0f0;
 }
 
 .row {
@@ -16,6 +21,26 @@
 .column-full,
 .column-half {
   width: 100%;
+}
+
+.container > header {
+  background-color: #562b81;
+  color: white;
+}
+
+img {
+  max-height: 30vh;
+  width: 100%;
+}
+
+input,
+textarea {
+  width: 100%;
+}
+
+.entry-save {
+  background-color: #562b81;
+  color: white;
 }
 
 @media screen and (min-width: 768px) {
@@ -31,9 +56,4 @@
   .column-half {
     width: 50%;
   }
-}
-
-img {
-  height: 200px;
-  width: 200px;
 }

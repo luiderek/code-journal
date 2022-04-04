@@ -15,38 +15,45 @@
 </head>
 
 <body>
-  <header>
-    <h2>Code Journal</h2>
-  </header>
-  <main>
-    <div data-view="entry-form">
-      <h1>New Entry</h1>
-      <img class="photo-preview" src="./images/placeholder-image-square.jpg" alt="picture of user url">
-      <form action="#" method="get">
-        <div>
-          <label for="title">Title<br>
-            <input type="text" name="title" size="30" required>
-          </label>
-        </div>
 
-        <div>
-          <label for="photoURL"> Photo URL<br>
-            <input type="url" name="photoURL" size="30" required>
-          </label>
-        </div>
+  <div class="container">
 
-        <div>
-          <label for="notes"> Notes<br>
-          </label>
-          <textarea name="notes" id="notes" cols="30" rows="10" required></textarea>
-          <br>
-          <button name="entry-save">SAVE</button>
-        </div>
-      </form>
-    </div>
-  </main>
+    <header>
+      <h2>Code Journal</h2>
+    </header>
+
+    <main>
+      <div data-view="entry-form">
+        <h1>New Entry</h1>
+        <img class="photo-preview" src="./images/placeholder-image-square.jpg" alt="picture of user url">
+        <form action="#" method="get">
+          <div>
+            <label for="title">Title<br>
+              <input type="text" name="title" required>
+            </label>
+          </div>
+
+          <div>
+            <label for="photoURL"> Photo URL<br>
+              <input type="url" name="photoURL" required>
+            </label>
+          </div>
+
+          <div>
+            <label for="notes"> Notes<br>
+            </label>
+            <textarea name="notes" id="notes" cols="30" required></textarea>
+            <br>
+            <button name="entry-save">SAVE</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
+
 </body>
 
 </html>
