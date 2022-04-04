@@ -1,0 +1,58 @@
+* {
+  font-family: Merriweather, Times, serif;
+}
+
+.container > header {
+  background-color: #562b81;
+  color: white;
+  font-family: "Nanum Gothic", Arial, sans-serif;
+
+  /* negative margins to grow the element */
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+img {
+  width: 100%;
+  max-height: 40vh;
+}
+
+input,
+textarea {
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+.entry-save {
+  background-color: #562b81;
+  color: white;
+}
+
+.container header p {
+  margin: 0;
+  padding: 0.7rem 1.5rem;
+}
+
+label {
+  height: auto;
+  display: inline-block;
+  margin: 1.5rem 0 0;
+  width: 100%;
+}
+
+button {
+  background-color: #562b81;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 6px;
+  border-style: none;
+  letter-spacing: 0.03rem;
+  font-family: "Nanum Gothic", Arial, sans-serif;
+}
+
+textarea {
+  resize: none;
+  height: 18vh;
+}

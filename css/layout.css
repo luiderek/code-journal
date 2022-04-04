@@ -2,10 +2,17 @@
   display: none !important;
 }
 
+html {
+  background-color: #e5e5e5;
+  margin: 0;
+}
+
 .container {
   max-width: 575px;
+  min-height: 100vh;
   margin: 0 auto;
   padding: 0 1.5rem;
+  background-color: #f0f0f0;
 }
 
 .row {
@@ -16,6 +23,11 @@
 .column-full,
 .column-half {
   width: 100%;
+}
+
+.justify-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media screen and (min-width: 768px) {
