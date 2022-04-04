@@ -9,7 +9,7 @@ $photoURL.addEventListener('input', function (e) {
   $photoPreview.setAttribute('src', e.target.value);
 });
 
-const $entryForm = document.querySelector('div[data-view=entry-form] > form');
+const $entryForm = document.querySelector('div[data-view=entry-form] form');
 $entryForm.addEventListener('submit', function (e) {
   e.preventDefault();
   const entryObj = {
