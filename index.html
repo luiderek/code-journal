@@ -31,45 +31,85 @@
     </header>
 
     <main>
-      <div data-view="entry-form">
+      <div data-view="entry-form" class="hidden">
         <div class="row">
           <div class="column-full">
             <h3>New Entry</h3>
           </div>
         </div>
+        <div class="row">
+          <form action="#" method="get" class="column-full">
+            <div class="row">
+              <img class="photo-preview column-half" src="./images/placeholder-image-square.jpg"
+                alt="picture of user url">
+              <div class="column-half">
+                <div>
+                  <label for="title">Title<br>
+                    <input type="text" name="title" required>
+                  </label>
+                </div>
 
-        <form action="#" method="get" class="column-full">
-          <div class="row">
-            <img class="photo-preview column-half" src="./images/placeholder-image-square.jpg"
-              alt="picture of user url">
-            <div class="column-half">
-              <div>
-                <label for="title">Title<br>
-                  <input type="text" name="title" required>
-                </label>
-              </div>
-
-              <div>
-                <label for="photoURL"> Photo URL<br>
-                  <input type="url" name="photoURL" required>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="column-full">
-              <div>
-                <label for="notes"> Notes</label>
-                <textarea name="notes" id="notes" cols="30" required></textarea>
-                <br>
-                <div class="justify-right">
-                  <button name="entry-save">SAVE</button>
+                <div>
+                  <label for="photoURL"> Photo URL<br>
+                    <input type="url" name="photoURL" required>
+                  </label>
                 </div>
               </div>
             </div>
+
+            <div class="row">
+              <div class="column-full">
+                <div>
+                  <label for="notes"> Notes</label>
+                  <textarea name="notes" id="notes" cols="30" required></textarea>
+                  <br>
+                  <div class="justify-right">
+                    <button name="entry-save">SAVE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div data-view="entries">
+        <div class="row entry-view">
+          <div class="column-full justify-space-between">
+            <h2>Entries</h2>
+            <button>NEW</button>
           </div>
-        </form>
+        </div>
+        <ul>
+          <li>
+            <div class="row margin-bot">
+              <div class="column-half">
+                <img src="https://picsum.photos/2000" alt="">
+              </div>
+              <div class="column-half">
+                <h3>Javascript</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio reiciendis mollitia quidem,
+                  perspiciatis reprehenderit modi dolorem nesciunt vero neque nostrum! Reiciendis repudiandae quibusdam
+                  officia qui, ut veniam dolores! Iure, ea.</p>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="row margin-bot">
+              <div class="column-half">
+                <img src="https://picsum.photos/2005" alt="">
+              </div>
+              <div class="column-half">
+                <h3>CSS</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio reiciendis mollitia quidem,
+                  perspiciatis
+                  reprehenderit modi dolorem nesciunt vero neque nostrum! Reiciendis repudiandae quibusdam officia qui,
+                  ut veniam
+                  dolores! Iure, ea.</p>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </main>
   </div>

@@ -30,6 +30,15 @@ html {
   justify-content: flex-end;
 }
 
+.justify-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.margin-bot {
+  margin-bottom: 2rem;
+}
+
 @media screen and (min-width: 768px) {
   .container {
     max-width: 900px;
