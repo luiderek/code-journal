@@ -87,3 +87,8 @@ textarea {
 .centered-text {
   text-align: center;
 }
+
+.fa-pen {
+  color: #562b81;
+  margin: -0.2rem 0.2rem 0 0;
+}
