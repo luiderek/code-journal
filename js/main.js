@@ -34,16 +34,9 @@ $entryForm.addEventListener('submit', function (e) {
     data.nextEntryId++;
     data.entries.unshift(entryObj);
     $entryList.prepend(entryToDOM(entryObj));
-
-    const $nothinghere = document.querySelector('.nothing-here');
-    if (data.entries.length === 1) {
-      if ($nothinghere) {
-        $nothinghere.remove();
-      }
-    }
+    removeNothings();
   }
 
-  $entryForm.reset();
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
 });
@@ -192,7 +185,6 @@ $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
     setViewToForm();
-    
     const dataID = +e.target.getAttribute('data-entry-id');
 
     for (const ent of data.entries) {
@@ -220,6 +212,8 @@ $deleteEntryButton.addEventListener('click', function (e) {
 let popupStatus = false;
 const $modal = document.querySelector('.modal');
 
+// should this be functionality that's tied up in the data object?
+// or some sort of seperate client dataside object instead of a floaty variable?
 function modalVisibilitySwitch() {
   popupStatus = !popupStatus;
   if (popupStatus === true) {
@@ -250,3 +244,29 @@ $modalYesSelect.addEventListener('click', function (e) {
 $modalNoSelect.addEventListener('click', function (e) {
   modalVisibilitySwitch();
 });
+
+// eslint-disable-next-line no-unused-vars
+function createDummyEntry(num) {
+  while (num--) {
+    const x = Math.random * 100 + 2000;
+
+    const entryObj = {
+      title: 'test title of some sort',
+      photoURL: 'https://picsum.photos/' + x,
+      notes: 'lorem ipsoom notes notes notes notes notes notes notes notes notes notes notes notes ',
+      entryId: data.nextEntryId
+    };
+
+    data.nextEntryId++;
+    data.entries.unshift(entryObj);
+    $entryList.prepend(entryToDOM(entryObj));
+  }
+  removeNothings();
+}
+
+function removeNothings() {
+  const $nothinghere = document.querySelector('.nothing-here');
+  if (data.entries.length === 1 && $nothinghere) {
+    $nothinghere.remove();
+  }
+}

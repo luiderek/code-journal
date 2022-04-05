@@ -18,7 +18,6 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 // eslint-disable-next-line no-unused-vars
-// little helper fuction, delete later.
 function clearEntries(a) {
   if (a) {
     data = {
