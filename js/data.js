@@ -16,3 +16,17 @@ window.addEventListener('beforeunload', function (event) {
   const dataJSON = JSON.stringify(data);
   this.localStorage.setItem('javascript-local-storage', dataJSON);
 });
+
+// eslint-disable-next-line no-unused-vars
+// little helper fuction, delete later.
+function clearEntries(a) {
+  if (a) {
+    data = {
+      view: 'entry-form',
+      entries: [],
+      editing: null,
+      nextEntryId: 1
+    };
+  }
+}
+clearEntries(null);
