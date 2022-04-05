@@ -139,6 +139,9 @@ window.addEventListener('DOMContentLoaded', function (e) {
     $nothinghere.className = 'centered-text nothing-here';
     $entryList.appendChild($nothinghere);
   }
+  if (data.editing) {
+    $entryFormLabel.textContent = 'Edit Entry';
+  }
   if (data.view === 'entry-list') {
     $entryListdiv.classList.remove('hidden');
     $entryFormdiv.classList.add('hidden');
@@ -148,6 +151,7 @@ window.addEventListener('DOMContentLoaded', function (e) {
   }
 });
 
+const $entryFormLabel = document.querySelector('.entry-form-label');
 const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
 const $entryListdiv = document.querySelector('div[data-view=entries]');
 const $entryAnchor = document.querySelector('.entry-anchor');
@@ -159,6 +163,7 @@ $entryAnchor.addEventListener('click', function (e) {
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
   setScreenEntryForm();
+  $entryFormLabel.textContent = 'New Entry';
 });
 
 function setScreenEntryForm() {
@@ -189,5 +194,7 @@ $entryListdiv.addEventListener('click', function (e) {
     $entryForm.photoURL.value = data.editing.photoURL;
     $entryForm.notes.value = data.editing.notes;
     $photoPreview.setAttribute('src', data.editing.photoURL);
+
+    $entryFormLabel.textContent = 'Edit Entry';
   }
 });
