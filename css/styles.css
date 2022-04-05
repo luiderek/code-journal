@@ -87,3 +87,45 @@ textarea {
 .centered-text {
   text-align: center;
 }
+
+.modal {
+  display: none;
+}
+
+.modal.blur {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(37 37 37 / 90%);
+}
+
+.modalcontent {
+  padding: 1.2rem 2.7rem 0.1rem;
+  background-color: white;
+  border-radius: 6px;
+  width: fit-content;
+  margin: 25vh auto;
+}
+
+.center button {
+  margin: 5rem;
+}
+
+.modal-yes-select {
+  background-color: #dc2626;
+  padding: 0.5rem;
+  font-size: 105%;
+}
+
+.modal-no-select {
+  background-color: #b6b6b6;
+  color: black;
+  padding: 0.5rem;
+  font-size: 110%;
+}
+
+.modalcontent > h2 {
+  font-size: 100%;
+  font-family: sans-serif;
+}

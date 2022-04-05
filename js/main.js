@@ -49,7 +49,7 @@ $entryForm.addEventListener('submit', function (e) {
 
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
-  setScreenEntryList();
+  setViewToList();
 });
 
 function entryToDOM(entry) {
@@ -146,9 +146,9 @@ window.addEventListener('DOMContentLoaded', function (e) {
   }
 
   if (data.view === 'entry-list') {
-    setScreenEntryList();
+    setViewToList();
   } else if (data.view === 'entry-form') {
-    setScreenEntryForm();
+    setViewToForm();
     if (data.editing) {
       $deleteEntryButton.classList.remove('hidden');
     }
@@ -162,23 +162,23 @@ const $entryAnchor = document.querySelector('.entry-anchor');
 
 $entryAnchor.addEventListener('click', function (e) {
   e.preventDefault();
-  setScreenEntryList();
+  setViewToList();
 });
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
-  setScreenEntryForm();
+  setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
   $deleteEntryButton.classList.add('hidden');
 });
 
-function setScreenEntryForm() {
+function setViewToForm() {
   data.view = 'entry-form';
   $entryFormdiv.classList.remove('hidden');
   $entryListdiv.classList.add('hidden');
 }
 
-function setScreenEntryList() {
+function setViewToList() {
   data.view = 'entry-list';
   $entryListdiv.classList.remove('hidden');
   $entryFormdiv.classList.add('hidden');
@@ -188,7 +188,7 @@ function setScreenEntryList() {
 $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
-    setScreenEntryForm();
+    setViewToForm();
     const dataID = +e.target.getAttribute('data-entry-id');
 
     for (const ent of data.entries) {
@@ -210,5 +210,36 @@ $entryListdiv.addEventListener('click', function (e) {
 const $deleteEntryButton = document.querySelector('.delete-entry-button');
 $deleteEntryButton.addEventListener('click', function (e) {
   e.preventDefault();
-  // logic to summon the modal blah blah blah
+  modalVisibilitySwitch();
+});
+
+let popupStatus = false;
+const $modal = document.querySelector('.modal');
+
+function modalVisibilitySwitch() {
+  popupStatus = !popupStatus;
+  if (popupStatus === true) {
+    $modal.className = 'modal blur';
+  } else {
+    $modal.className = 'modal';
+  }
+}
+
+const $modalYesSelect = document.querySelector('.modal-yes-select');
+const $modalNoSelect = document.querySelector('.modal-no-select');
+
+$modalYesSelect.addEventListener('click', function (e) {
+  // the relavent data.entries object
+  const goodobj = data.entries.filter(obj => { return obj.entryId === data.editing.entryId; })[0];
+  // remove from dom
+  getElementFromObject(goodobj).remove();
+  // update the object model
+  data.entries = data.entries.filter(obj => { return obj.entryId !== data.editing.entryId; });
+  data.editing = null;
+  modalVisibilitySwitch();
+  setViewToList();
+});
+
+$modalNoSelect.addEventListener('click', function (e) {
+  modalVisibilitySwitch();
 });
