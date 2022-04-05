@@ -18,14 +18,11 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 // eslint-disable-next-line no-unused-vars
-function clearEntries(a) {
-  if (a) {
-    data = {
-      view: 'entry-form',
-      entries: [],
-      editing: null,
-      nextEntryId: 1
-    };
-  }
+function resetDataObject() {
+  data = {
+    view: 'entry-form',
+    entries: [],
+    editing: null,
+    nextEntryId: 1
+  };
 }
-clearEntries(null);

@@ -2,6 +2,34 @@
 /* exported data */
 
 const $photoURL = document.querySelector('input[name=photoURL]');
+const $entryList = document.querySelector('.entry-view-container');
+const $entryFormLabel = document.querySelector('.entry-form-label');
+const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
+const $entryListdiv = document.querySelector('div[data-view=entries]');
+
+window.addEventListener('DOMContentLoaded', function (e) {
+  if (data.entries.length) {
+    for (const eachentry of data.entries) {
+      $entryList.appendChild(entryToDOM(eachentry));
+    }
+  } else {
+    appendNothingHereDOM($entryList);
+  }
+
+  if (data.editing) {
+    $entryFormLabel.textContent = 'Edit Entry';
+    $photoPreview.setAttribute('src', data.editing.photoURL);
+  }
+
+  if (data.view === 'entry-list') {
+    setViewToList();
+  } else if (data.view === 'entry-form') {
+    setViewToForm();
+    if (data.editing) {
+      $deleteEntryButton.classList.remove('hidden');
+    }
+  }
+});
 
 const $photoPreview = document.querySelector('.photo-preview');
 $photoURL.addEventListener('input', function (e) {
@@ -39,6 +67,22 @@ $entryForm.addEventListener('submit', function (e) {
 
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
+});
+
+const $entryAnchor = document.querySelector('.entry-anchor');
+$entryAnchor.addEventListener('click', function (e) {
+  e.preventDefault();
+  setViewToList();
+});
+
+const $newEntryButton = document.querySelector('button[name=new-entry]');
+$newEntryButton.addEventListener('click', function (e) {
+  setViewToForm();
+  $entryFormLabel.textContent = 'New Entry';
+  $deleteEntryButton.classList.add('hidden');
+  data.editing = null;
+  $entryForm.reset();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
 });
 
 function entryToDOM(entry) {
@@ -99,13 +143,6 @@ function entryToDOM(entry) {
   return $li;
 }
 
-function updateEntry(entry) {
-  const $target = getElementFromObject(entry);
-  if ($target) {
-    $target.replaceWith(entryToDOM(entry));
-  }
-}
-
 function getElementFromObject(entry) {
   const $entryListNodeList = document.querySelectorAll('.entry-list-element');
   for (const node of $entryListNodeList) {
@@ -115,32 +152,6 @@ function getElementFromObject(entry) {
   }
 }
 
-const $entryList = document.querySelector('.entry-view-container');
-
-window.addEventListener('DOMContentLoaded', function (e) {
-  if (data.entries.length) {
-    for (const eachentry of data.entries) {
-      $entryList.appendChild(entryToDOM(eachentry));
-    }
-  } else {
-    appendNothingHereDOM($entryList);
-  }
-
-  if (data.editing) {
-    $entryFormLabel.textContent = 'Edit Entry';
-    $photoPreview.setAttribute('src', data.editing.photoURL);
-  }
-
-  if (data.view === 'entry-list') {
-    setViewToList();
-  } else if (data.view === 'entry-form') {
-    setViewToForm();
-    if (data.editing) {
-      $deleteEntryButton.classList.remove('hidden');
-    }
-  }
-});
-
 function appendNothingHereDOM(parent) {
   const $nothinghere = document.createElement('li');
   $nothinghere.textContent = 'No entries have been recorded.';
@@ -148,25 +159,31 @@ function appendNothingHereDOM(parent) {
   parent.appendChild($nothinghere);
 }
 
-const $entryFormLabel = document.querySelector('.entry-form-label');
-const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
-const $entryListdiv = document.querySelector('div[data-view=entries]');
-const $entryAnchor = document.querySelector('.entry-anchor');
+function updateEntry(entry) {
+  const $target = getElementFromObject(entry);
+  if ($target) {
+    $target.replaceWith(entryToDOM(entry));
+  }
+}
 
-$entryAnchor.addEventListener('click', function (e) {
-  e.preventDefault();
-  setViewToList();
-});
+// this is currently broken I believe.
+// only called by helper function so not a big problem.
+function entryListRefreshDOM() {
+  entryListClearDOM();
+  if (data.entries.length) {
+    for (const eachentry of data.entries) {
+      $entryList.appendChild(entryToDOM(eachentry));
+    }
+  }
+}
 
-const $newEntryButton = document.querySelector('button[name=new-entry]');
-$newEntryButton.addEventListener('click', function (e) {
-  setViewToForm();
-  $entryFormLabel.textContent = 'New Entry';
-  $deleteEntryButton.classList.add('hidden');
-  data.editing = null;
-  $entryForm.reset();
-  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
-});
+// eslint-disable-next-line no-unused-vars
+function entryListClearDOM() {
+  const $entryListNodeList = document.querySelectorAll('.entry-list-element');
+  for (const node of $entryListNodeList) {
+    node.remove();
+  }
+}
 
 function setViewToForm() {
   data.view = 'entry-form';
@@ -180,9 +197,15 @@ function setViewToList() {
   $entryFormdiv.classList.add('hidden');
 }
 
+function removeNothings() {
+  const $nothinghere = document.querySelector('.nothing-here');
+  if ($nothinghere) {
+    $nothinghere.remove();
+  }
+}
+
 // on clicking the edit pencil
 $entryListdiv.addEventListener('click', function (e) {
-
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
     setViewToForm();
     const dataID = +e.target.getAttribute('data-entry-id');
@@ -209,8 +232,11 @@ $deleteEntryButton.addEventListener('click', function (e) {
   modalVisibilitySwitch();
 });
 
+// MODAL
 let popupStatus = false;
 const $modal = document.querySelector('.modal');
+const $modalYesSelect = document.querySelector('.modal-yes-select');
+const $modalNoSelect = document.querySelector('.modal-no-select');
 
 // should this be functionality that's tied up in the data object?
 // or some sort of seperate client dataside object instead of a floaty variable?
@@ -222,9 +248,6 @@ function modalVisibilitySwitch() {
     $modal.className = 'modal';
   }
 }
-
-const $modalYesSelect = document.querySelector('.modal-yes-select');
-const $modalNoSelect = document.querySelector('.modal-no-select');
 
 $modalYesSelect.addEventListener('click', function (e) {
   const goodobj = data.entries.filter(obj => { return obj.entryId === data.editing.entryId; })[0];
@@ -262,11 +285,5 @@ function createDummyEntry(num) {
     $entryList.prepend(entryToDOM(entryObj));
   }
   removeNothings();
-}
-
-function removeNothings() {
-  const $nothinghere = document.querySelector('.nothing-here');
-  if (data.entries.length === 1 && $nothinghere) {
-    $nothinghere.remove();
-  }
+  entryListRefreshDOM();
 }
