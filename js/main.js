@@ -139,14 +139,19 @@ window.addEventListener('DOMContentLoaded', function (e) {
     $nothinghere.className = 'centered-text nothing-here';
     $entryList.appendChild($nothinghere);
   }
+
   if (data.editing) {
     $entryFormLabel.textContent = 'Edit Entry';
     $photoPreview.setAttribute('src', data.editing.photoURL);
   }
+
   if (data.view === 'entry-list') {
     setScreenEntryList();
   } else if (data.view === 'entry-form') {
     setScreenEntryForm();
+    if (data.editing) {
+      $deleteEntryButton.classList.remove('hidden');
+    }
   }
 });
 
@@ -154,6 +159,7 @@ const $entryFormLabel = document.querySelector('.entry-form-label');
 const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
 const $entryListdiv = document.querySelector('div[data-view=entries]');
 const $entryAnchor = document.querySelector('.entry-anchor');
+
 $entryAnchor.addEventListener('click', function (e) {
   e.preventDefault();
   setScreenEntryList();
@@ -163,7 +169,7 @@ const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
   setScreenEntryForm();
   $entryFormLabel.textContent = 'New Entry';
-
+  $deleteEntryButton.classList.add('hidden');
 });
 
 function setScreenEntryForm() {
@@ -178,6 +184,7 @@ function setScreenEntryList() {
   $entryFormdiv.classList.add('hidden');
 }
 
+// on clicking the edit pencil
 $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
@@ -196,6 +203,12 @@ $entryListdiv.addEventListener('click', function (e) {
     $photoPreview.setAttribute('src', data.editing.photoURL);
 
     $entryFormLabel.textContent = 'Edit Entry';
-
+    $deleteEntryButton.classList.remove('hidden');
   }
+});
+
+const $deleteEntryButton = document.querySelector('.delete-entry-button');
+$deleteEntryButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  // logic to summon the modal blah blah blah
 });
