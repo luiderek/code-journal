@@ -3,7 +3,6 @@
 
 const $photoURL = document.querySelector('input[name=photoURL]');
 
-// no error check for broken src attribute
 const $photoPreview = document.querySelector('.photo-preview');
 $photoURL.addEventListener('input', function (e) {
   $photoPreview.setAttribute('src', e.target.value);
@@ -14,8 +13,6 @@ $entryForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
   if (data.editing) {
-    // if this is a editing screen
-
     data.editing.title = e.target.title.value;
     data.editing.photoURL = e.target.photoURL.value;
     data.editing.notes = e.target.notes.value;
@@ -27,7 +24,6 @@ $entryForm.addEventListener('submit', function (e) {
 
     data.editing = null;
   } else {
-    // otherwise if its a new entry
     const entryObj = {
       title: e.target.title.value,
       photoURL: e.target.photoURL.value,
@@ -50,7 +46,6 @@ $entryForm.addEventListener('submit', function (e) {
   $entryForm.reset();
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
-  setScreenEntryList();
 });
 
 function entryToDOM(entry) {
@@ -172,7 +167,6 @@ $entryAnchor.addEventListener('click', function (e) {
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
-
   setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
   $deleteEntryButton.classList.add('hidden');
@@ -239,7 +233,6 @@ const $modalYesSelect = document.querySelector('.modal-yes-select');
 const $modalNoSelect = document.querySelector('.modal-no-select');
 
 $modalYesSelect.addEventListener('click', function (e) {
-  // the relavent data.entries object
   const goodobj = data.entries.filter(obj => { return obj.entryId === data.editing.entryId; })[0];
   // remove from dom
   getElementFromObject(goodobj).remove();
