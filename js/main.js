@@ -248,7 +248,7 @@ $modalNoSelect.addEventListener('click', function (e) {
 // eslint-disable-next-line no-unused-vars
 function createDummyEntry(num) {
   while (num--) {
-    const x = Math.random * 100 + 2000;
+    const x = Math.floor(Math.random() * 100) + 700;
 
     const entryObj = {
       title: 'test title of some sort',
