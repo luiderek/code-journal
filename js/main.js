@@ -12,30 +12,44 @@ $photoURL.addEventListener('input', function (e) {
 const $entryForm = document.querySelector('div[data-view=entry-form] form');
 $entryForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  const entryObj = {
-    title: e.target.title.value,
-    photoURL: e.target.photoURL.value,
-    notes: e.target.notes.value,
-    entryId: data.nextEntryId
-  };
 
-  data.nextEntryId++;
-  data.entries.unshift(entryObj);
-  $entryList.prepend(entryToDOM(entryObj));
+  if (data.editing) {
+    // if this is a editing screen
 
-  const $nothinghere = document.querySelector('.nothing-here');
-  if (data.entries.length === 1) {
-    if ($nothinghere) {
-      $nothinghere.remove();
+    data.editing.title = e.target.title.value;
+    data.editing.photoURL = e.target.photoURL.value;
+    data.editing.notes = e.target.notes.value;
+
+    // brute force re-rendering all because brain fried, can't think.
+    for (const entryobject of data.entries) {
+      updateEntry(entryobject);
+    }
+
+    data.editing = null;
+  } else {
+    // otherwise if its a new entry
+    const entryObj = {
+      title: e.target.title.value,
+      photoURL: e.target.photoURL.value,
+      notes: e.target.notes.value,
+      entryId: data.nextEntryId
+    };
+
+    data.nextEntryId++;
+    data.entries.unshift(entryObj);
+    $entryList.prepend(entryToDOM(entryObj));
+
+    const $nothinghere = document.querySelector('.nothing-here');
+    if (data.entries.length === 1) {
+      if ($nothinghere) {
+        $nothinghere.remove();
+      }
     }
   }
 
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
-
-  $entryListdiv.classList.remove('hidden');
-  $entryFormdiv.classList.add('hidden');
-  data.view = 'entry-list';
+  setScreenEntryList();
 });
 
 function entryToDOM(entry) {
@@ -58,6 +72,7 @@ function entryToDOM(entry) {
 
   const $li = document.createElement('li');
   $li.classList.add('entry-list-element');
+  $li.setAttribute('data-entryID', entry.entryId + '');
 
   const $divRMb = document.createElement('div');
   $divRMb.classList.add('row', 'margin-bot');
@@ -95,6 +110,22 @@ function entryToDOM(entry) {
   return $li;
 }
 
+function updateEntry(entry) {
+  const $target = getElementFromObject(entry);
+  if ($target) {
+    $target.replaceWith(entryToDOM(entry));
+  }
+}
+
+function getElementFromObject(entry) {
+  const $entryListNodeList = document.querySelectorAll('.entry-list-element');
+  for (const node of $entryListNodeList) {
+    if (entry && entry.entryId === +node.getAttribute('data-entryid')) {
+      return node;
+    }
+  }
+}
+
 const $entryList = document.querySelector('.entry-view-container');
 
 window.addEventListener('DOMContentLoaded', function (e) {
@@ -122,33 +153,41 @@ const $entryListdiv = document.querySelector('div[data-view=entries]');
 const $entryAnchor = document.querySelector('.entry-anchor');
 $entryAnchor.addEventListener('click', function (e) {
   e.preventDefault();
-  data.view = 'entry-list';
-  $entryListdiv.classList.remove('hidden');
-  $entryFormdiv.classList.add('hidden');
+  setScreenEntryList();
 });
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
+  setScreenEntryForm();
+});
+
+function setScreenEntryForm() {
   data.view = 'entry-form';
   $entryFormdiv.classList.remove('hidden');
   $entryListdiv.classList.add('hidden');
-});
+}
+
+function setScreenEntryList() {
+  data.view = 'entry-list';
+  $entryListdiv.classList.remove('hidden');
+  $entryFormdiv.classList.add('hidden');
+}
 
 $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
-    data.view = 'entry-edit';
-    $entryFormdiv.classList.remove('hidden');
-    $entryListdiv.classList.add('hidden');
+    setScreenEntryForm();
     const dataID = +e.target.getAttribute('data-entry-id');
-    let $correctEntry = null;
+
     for (const ent of data.entries) {
       if (ent.entryId === dataID) {
-        $correctEntry = ent;
+        data.editing = ent;
       }
     }
-    $entryForm.title.value = $correctEntry.title;
-    $entryForm.photoURL.value = $correctEntry.photoURL;
-    $entryForm.notes.value = $correctEntry.notes;
+
+    $entryForm.title.value = data.editing.title;
+    $entryForm.photoURL.value = data.editing.photoURL;
+    $entryForm.notes.value = data.editing.notes;
+    $photoPreview.setAttribute('src', data.editing.photoURL);
   }
 });
