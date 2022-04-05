@@ -45,7 +45,10 @@ function entryToDOM(entry) {
   //       <img src="https://picsum.photos/2000" alt="">
   //     </div>
   //     <div class="column-half">
-  //       <h3>Javascript</h3>
+  //       <div class="row justify-space-between">
+  //         <h3>Javascript</h3>
+  //         <i class="fas fa-pen"></i>
+  //       </div>
   //       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio reiciendis mollitia quidem,
   //         perspiciatis reprehenderit modi dolorem nesciunt vero neque nostrum! Reiciendis repudiandae quibusdam
   //         officia qui, ut veniam dolores! Iure, ea.</p>
@@ -54,16 +57,29 @@ function entryToDOM(entry) {
   // </li>
 
   const $li = document.createElement('li');
+  $li.classList.add('entry-list-element');
+
   const $divRMb = document.createElement('div');
   $divRMb.classList.add('row', 'margin-bot');
+
   const $img = document.createElement('img');
   $img.setAttribute('src', entry.photoURL);
+
   const $divch1 = document.createElement('div');
   $divch1.classList.add('column-half');
   const $divch2 = document.createElement('div');
   $divch2.classList.add('column-half');
+
+  const $divRjsb = document.createElement('div');
+  $divRjsb.classList.add('row', 'justify-space-between');
+
   const $h3 = document.createElement('h3');
   $h3.textContent = entry.title;
+
+  const $i = document.createElement('i');
+  $i.classList.add('fas', 'fa-pen');
+  $i.setAttribute('data-entry-id', entry.entryId);
+
   const $p = document.createElement('p');
   $p.textContent = entry.notes;
 
@@ -71,7 +87,9 @@ function entryToDOM(entry) {
   $divRMb.appendChild($divch1);
   $divch1.appendChild($img);
   $divRMb.appendChild($divch2);
-  $divch2.appendChild($h3);
+  $divch2.appendChild($divRjsb);
+  $divRjsb.appendChild($h3);
+  $divRjsb.appendChild($i);
   $divch2.appendChild($p);
 
   return $li;
@@ -114,4 +132,23 @@ $newEntryButton.addEventListener('click', function (e) {
   data.view = 'entry-form';
   $entryFormdiv.classList.remove('hidden');
   $entryListdiv.classList.add('hidden');
+});
+
+$entryListdiv.addEventListener('click', function (e) {
+
+  if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
+    data.view = 'entry-edit';
+    $entryFormdiv.classList.remove('hidden');
+    $entryListdiv.classList.add('hidden');
+    const dataID = +e.target.getAttribute('data-entry-id');
+    let $correctEntry = null;
+    for (const ent of data.entries) {
+      if (ent.entryId === dataID) {
+        $correctEntry = ent;
+      }
+    }
+    $entryForm.title.value = $correctEntry.title;
+    $entryForm.photoURL.value = $correctEntry.photoURL;
+    $entryForm.notes.value = $correctEntry.notes;
+  }
 });
