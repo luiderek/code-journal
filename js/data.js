@@ -4,7 +4,8 @@ var data = {
   view: 'entry-form',
   entries: [],
   editing: null,
-  nextEntryId: 1
+  nextEntryId: 1,
+  modalLive: false
 };
 
 const previousDataJSON = localStorage.getItem('javascript-local-storage');
@@ -23,6 +24,7 @@ function resetDataObject() {
     view: 'entry-form',
     entries: [],
     editing: null,
-    nextEntryId: 1
+    nextEntryId: 1,
+    modalLive: false
   };
 }

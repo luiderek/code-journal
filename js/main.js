@@ -9,8 +9,8 @@ const $entryListdiv = document.querySelector('div[data-view=entries]');
 
 window.addEventListener('DOMContentLoaded', function (e) {
   if (data.entries.length) {
-    for (const eachentry of data.entries) {
-      $entryList.appendChild(entryToDOM(eachentry));
+    for (const entry of data.entries) {
+      $entryList.appendChild(entryToDOM(entry));
     }
   } else {
     appendNothingHereDOM($entryList);
@@ -45,9 +45,9 @@ $entryForm.addEventListener('submit', function (e) {
     data.editing.photoURL = e.target.photoURL.value;
     data.editing.notes = e.target.notes.value;
 
-    // brute force re-rendering all because brain fried, can't think.
-    for (const entryobject of data.entries) {
-      updateEntry(entryobject);
+    // brute force re-rendering all brain fried, can't think.
+    for (const entry of data.entries) {
+      updateEntry(entry);
     }
 
     data.editing = null;
@@ -87,7 +87,7 @@ $newEntryButton.addEventListener('click', function (e) {
 
 function entryToDOM(entry) {
   // <li>
-  //   <div class="row margin-bot">
+  //   <div class="row margin-bot justify-space-between">
   //     <div class="column-half">
   //       <img src="https://picsum.photos/2000" alt="">
   //     </div>
@@ -108,7 +108,7 @@ function entryToDOM(entry) {
   $li.setAttribute('data-entryID', entry.entryId + '');
 
   const $divRMb = document.createElement('div');
-  $divRMb.classList.add('row', 'margin-bot');
+  $divRMb.classList.add('row', 'margin-bot', 'justify-space-between');
 
   const $img = document.createElement('img');
   $img.setAttribute('src', entry.photoURL);
@@ -166,8 +166,6 @@ function updateEntry(entry) {
   }
 }
 
-// this is currently broken I believe.
-// only called by helper function so not a big problem.
 function entryListRefreshDOM() {
   entryListClearDOM();
   if (data.entries.length) {
@@ -210,9 +208,9 @@ $entryListdiv.addEventListener('click', function (e) {
     setViewToForm();
     const dataID = +e.target.getAttribute('data-entry-id');
 
-    for (const ent of data.entries) {
-      if (ent.entryId === dataID) {
-        data.editing = ent;
+    for (const entry of data.entries) {
+      if (entry.entryId === dataID) {
+        data.editing = entry;
       }
     }
 
@@ -233,16 +231,13 @@ $deleteEntryButton.addEventListener('click', function (e) {
 });
 
 // MODAL
-let popupStatus = false;
 const $modal = document.querySelector('.modal');
 const $modalYesSelect = document.querySelector('.modal-yes-select');
 const $modalNoSelect = document.querySelector('.modal-no-select');
 
-// should this be functionality that's tied up in the data object?
-// or some sort of seperate client dataside object instead of a floaty variable?
 function modalVisibilitySwitch() {
-  popupStatus = !popupStatus;
-  if (popupStatus === true) {
+  data.modalLive = !data.modalLive;
+  if (data.modalLive === true) {
     $modal.className = 'modal blur';
   } else {
     $modal.className = 'modal';

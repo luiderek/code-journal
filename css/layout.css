@@ -48,13 +48,9 @@ html {
     max-width: 900px;
   }
 
-  .column-full,
-  .column-half {
-    padding: 0 0.75rem;
-  }
-
   .column-half {
     width: 50%;
+    flex-basis: 48.8%;
   }
 
   h2 {
