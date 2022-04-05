@@ -4,7 +4,8 @@ var data = {
   view: 'entry-form',
   entries: [],
   editing: null,
-  nextEntryId: 1
+  nextEntryId: 1,
+  modalLive: false
 };
 
 const previousDataJSON = localStorage.getItem('javascript-local-storage');
@@ -18,15 +19,12 @@ window.addEventListener('beforeunload', function (event) {
 });
 
 // eslint-disable-next-line no-unused-vars
-// little helper fuction, delete later.
-function clearEntries(a) {
-  if (a) {
-    data = {
-      view: 'entry-form',
-      entries: [],
-      editing: null,
-      nextEntryId: 1
-    };
-  }
+function resetDataObject() {
+  data = {
+    view: 'entry-form',
+    entries: [],
+    editing: null,
+    nextEntryId: 1,
+    modalLive: false
+  };
 }
-clearEntries(null);

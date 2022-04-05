@@ -2,6 +2,34 @@
 /* exported data */
 
 const $photoURL = document.querySelector('input[name=photoURL]');
+const $entryList = document.querySelector('.entry-view-container');
+const $entryFormLabel = document.querySelector('.entry-form-label');
+const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
+const $entryListdiv = document.querySelector('div[data-view=entries]');
+
+window.addEventListener('DOMContentLoaded', function (e) {
+  if (data.entries.length) {
+    for (const entry of data.entries) {
+      $entryList.appendChild(entryToDOM(entry));
+    }
+  } else {
+    appendNothingHereDOM($entryList);
+  }
+
+  if (data.editing) {
+    $entryFormLabel.textContent = 'Edit Entry';
+    $photoPreview.setAttribute('src', data.editing.photoURL);
+  }
+
+  if (data.view === 'entry-list') {
+    setViewToList();
+  } else if (data.view === 'entry-form') {
+    setViewToForm();
+    if (data.editing) {
+      $deleteEntryButton.classList.remove('hidden');
+    }
+  }
+});
 
 const $photoPreview = document.querySelector('.photo-preview');
 $photoURL.addEventListener('input', function (e) {
@@ -17,9 +45,9 @@ $entryForm.addEventListener('submit', function (e) {
     data.editing.photoURL = e.target.photoURL.value;
     data.editing.notes = e.target.notes.value;
 
-    // brute force re-rendering all because brain fried, can't think.
-    for (const entryobject of data.entries) {
-      updateEntry(entryobject);
+    // brute force re-rendering all brain fried, can't think.
+    for (const entry of data.entries) {
+      updateEntry(entry);
     }
 
     data.editing = null;
@@ -34,23 +62,32 @@ $entryForm.addEventListener('submit', function (e) {
     data.nextEntryId++;
     data.entries.unshift(entryObj);
     $entryList.prepend(entryToDOM(entryObj));
-
-    const $nothinghere = document.querySelector('.nothing-here');
-    if (data.entries.length === 1) {
-      if ($nothinghere) {
-        $nothinghere.remove();
-      }
-    }
+    removeNothings();
   }
 
-  $entryForm.reset();
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
 });
 
+const $entryAnchor = document.querySelector('.entry-anchor');
+$entryAnchor.addEventListener('click', function (e) {
+  e.preventDefault();
+  setViewToList();
+});
+
+const $newEntryButton = document.querySelector('button[name=new-entry]');
+$newEntryButton.addEventListener('click', function (e) {
+  setViewToForm();
+  $entryFormLabel.textContent = 'New Entry';
+  $deleteEntryButton.classList.add('hidden');
+  data.editing = null;
+  $entryForm.reset();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
+});
+
 function entryToDOM(entry) {
   // <li>
-  //   <div class="row margin-bot">
+  //   <div class="row margin-bot justify-space-between">
   //     <div class="column-half">
   //       <img src="https://picsum.photos/2000" alt="">
   //     </div>
@@ -71,7 +108,7 @@ function entryToDOM(entry) {
   $li.setAttribute('data-entryID', entry.entryId + '');
 
   const $divRMb = document.createElement('div');
-  $divRMb.classList.add('row', 'margin-bot');
+  $divRMb.classList.add('row', 'margin-bot', 'justify-space-between');
 
   const $img = document.createElement('img');
   $img.setAttribute('src', entry.photoURL);
@@ -106,13 +143,6 @@ function entryToDOM(entry) {
   return $li;
 }
 
-function updateEntry(entry) {
-  const $target = getElementFromObject(entry);
-  if ($target) {
-    $target.replaceWith(entryToDOM(entry));
-  }
-}
-
 function getElementFromObject(entry) {
   const $entryListNodeList = document.querySelectorAll('.entry-list-element');
   for (const node of $entryListNodeList) {
@@ -122,32 +152,6 @@ function getElementFromObject(entry) {
   }
 }
 
-const $entryList = document.querySelector('.entry-view-container');
-
-window.addEventListener('DOMContentLoaded', function (e) {
-  if (data.entries.length) {
-    for (const eachentry of data.entries) {
-      $entryList.appendChild(entryToDOM(eachentry));
-    }
-  } else {
-    appendNothingHereDOM($entryList);
-  }
-
-  if (data.editing) {
-    $entryFormLabel.textContent = 'Edit Entry';
-    $photoPreview.setAttribute('src', data.editing.photoURL);
-  }
-
-  if (data.view === 'entry-list') {
-    setViewToList();
-  } else if (data.view === 'entry-form') {
-    setViewToForm();
-    if (data.editing) {
-      $deleteEntryButton.classList.remove('hidden');
-    }
-  }
-});
-
 function appendNothingHereDOM(parent) {
   const $nothinghere = document.createElement('li');
   $nothinghere.textContent = 'No entries have been recorded.';
@@ -155,25 +159,29 @@ function appendNothingHereDOM(parent) {
   parent.appendChild($nothinghere);
 }
 
-const $entryFormLabel = document.querySelector('.entry-form-label');
-const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
-const $entryListdiv = document.querySelector('div[data-view=entries]');
-const $entryAnchor = document.querySelector('.entry-anchor');
+function updateEntry(entry) {
+  const $target = getElementFromObject(entry);
+  if ($target) {
+    $target.replaceWith(entryToDOM(entry));
+  }
+}
 
-$entryAnchor.addEventListener('click', function (e) {
-  e.preventDefault();
-  setViewToList();
-});
+function entryListRefreshDOM() {
+  entryListClearDOM();
+  if (data.entries.length) {
+    for (const eachentry of data.entries) {
+      $entryList.appendChild(entryToDOM(eachentry));
+    }
+  }
+}
 
-const $newEntryButton = document.querySelector('button[name=new-entry]');
-$newEntryButton.addEventListener('click', function (e) {
-  setViewToForm();
-  $entryFormLabel.textContent = 'New Entry';
-  $deleteEntryButton.classList.add('hidden');
-  data.editing = null;
-  $entryForm.reset();
-  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
-});
+// eslint-disable-next-line no-unused-vars
+function entryListClearDOM() {
+  const $entryListNodeList = document.querySelectorAll('.entry-list-element');
+  for (const node of $entryListNodeList) {
+    node.remove();
+  }
+}
 
 function setViewToForm() {
   data.view = 'entry-form';
@@ -187,17 +195,22 @@ function setViewToList() {
   $entryFormdiv.classList.add('hidden');
 }
 
+function removeNothings() {
+  const $nothinghere = document.querySelector('.nothing-here');
+  if ($nothinghere) {
+    $nothinghere.remove();
+  }
+}
+
 // on clicking the edit pencil
 $entryListdiv.addEventListener('click', function (e) {
-
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
     setViewToForm();
-    
     const dataID = +e.target.getAttribute('data-entry-id');
 
-    for (const ent of data.entries) {
-      if (ent.entryId === dataID) {
-        data.editing = ent;
+    for (const entry of data.entries) {
+      if (entry.entryId === dataID) {
+        data.editing = entry;
       }
     }
 
@@ -217,20 +230,19 @@ $deleteEntryButton.addEventListener('click', function (e) {
   modalVisibilitySwitch();
 });
 
-let popupStatus = false;
+// MODAL
 const $modal = document.querySelector('.modal');
+const $modalYesSelect = document.querySelector('.modal-yes-select');
+const $modalNoSelect = document.querySelector('.modal-no-select');
 
 function modalVisibilitySwitch() {
-  popupStatus = !popupStatus;
-  if (popupStatus === true) {
+  data.modalLive = !data.modalLive;
+  if (data.modalLive === true) {
     $modal.className = 'modal blur';
   } else {
     $modal.className = 'modal';
   }
 }
-
-const $modalYesSelect = document.querySelector('.modal-yes-select');
-const $modalNoSelect = document.querySelector('.modal-no-select');
 
 $modalYesSelect.addEventListener('click', function (e) {
   const goodobj = data.entries.filter(obj => { return obj.entryId === data.editing.entryId; })[0];
@@ -250,3 +262,23 @@ $modalYesSelect.addEventListener('click', function (e) {
 $modalNoSelect.addEventListener('click', function (e) {
   modalVisibilitySwitch();
 });
+
+// eslint-disable-next-line no-unused-vars
+function createDummyEntry(num) {
+  while (num--) {
+    const x = Math.floor(Math.random() * 100) + 700;
+
+    const entryObj = {
+      title: 'test title of some sort',
+      photoURL: 'https://picsum.photos/' + x,
+      notes: 'lorem ipsoom notes notes notes notes notes notes notes notes notes notes notes notes ',
+      entryId: data.nextEntryId
+    };
+
+    data.nextEntryId++;
+    data.entries.unshift(entryObj);
+    $entryList.prepend(entryToDOM(entryObj));
+  }
+  removeNothings();
+  entryListRefreshDOM();
+}
