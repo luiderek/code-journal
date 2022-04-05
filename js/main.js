@@ -47,8 +47,8 @@ $entryForm.addEventListener('submit', function (e) {
     }
   }
 
-  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
 });
 
@@ -134,10 +134,7 @@ window.addEventListener('DOMContentLoaded', function (e) {
       $entryList.appendChild(entryToDOM(eachentry));
     }
   } else {
-    const $nothinghere = document.createElement('li');
-    $nothinghere.textContent = 'No entries have been recorded.';
-    $nothinghere.className = 'centered-text nothing-here';
-    $entryList.appendChild($nothinghere);
+    appendNothingHereDOM($entryList);
   }
 
   if (data.editing) {
@@ -155,6 +152,13 @@ window.addEventListener('DOMContentLoaded', function (e) {
   }
 });
 
+function appendNothingHereDOM(parent) {
+  const $nothinghere = document.createElement('li');
+  $nothinghere.textContent = 'No entries have been recorded.';
+  $nothinghere.className = 'centered-text nothing-here';
+  parent.appendChild($nothinghere);
+}
+
 const $entryFormLabel = document.querySelector('.entry-form-label');
 const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
 const $entryListdiv = document.querySelector('div[data-view=entries]');
@@ -170,6 +174,9 @@ $newEntryButton.addEventListener('click', function (e) {
   setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
   $deleteEntryButton.classList.add('hidden');
+  data.editing = null;
+  $entryForm.reset();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
 });
 
 function setViewToForm() {
@@ -238,6 +245,10 @@ $modalYesSelect.addEventListener('click', function (e) {
   data.editing = null;
   modalVisibilitySwitch();
   setViewToList();
+
+  if (!data.entries.length) {
+    appendNothingHereDOM($entryList);
+  }
 });
 
 $modalNoSelect.addEventListener('click', function (e) {
