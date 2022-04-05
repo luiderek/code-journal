@@ -3,7 +3,6 @@
 
 const $photoURL = document.querySelector('input[name=photoURL]');
 
-// no error check for broken src attribute
 const $photoPreview = document.querySelector('.photo-preview');
 $photoURL.addEventListener('input', function (e) {
   $photoPreview.setAttribute('src', e.target.value);
@@ -14,8 +13,6 @@ $entryForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
   if (data.editing) {
-    // if this is a editing screen
-
     data.editing.title = e.target.title.value;
     data.editing.photoURL = e.target.photoURL.value;
     data.editing.notes = e.target.notes.value;
@@ -27,7 +24,6 @@ $entryForm.addEventListener('submit', function (e) {
 
     data.editing = null;
   } else {
-    // otherwise if its a new entry
     const entryObj = {
       title: e.target.title.value,
       photoURL: e.target.photoURL.value,
@@ -47,9 +43,9 @@ $entryForm.addEventListener('submit', function (e) {
     }
   }
 
-  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
-  setScreenEntryList();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
+  setViewToList();
 });
 
 function entryToDOM(entry) {
@@ -134,55 +130,69 @@ window.addEventListener('DOMContentLoaded', function (e) {
       $entryList.appendChild(entryToDOM(eachentry));
     }
   } else {
-    const $nothinghere = document.createElement('li');
-    $nothinghere.textContent = 'No entries have been recorded.';
-    $nothinghere.className = 'centered-text nothing-here';
-    $entryList.appendChild($nothinghere);
+    appendNothingHereDOM($entryList);
   }
+
   if (data.editing) {
     $entryFormLabel.textContent = 'Edit Entry';
     $photoPreview.setAttribute('src', data.editing.photoURL);
   }
+
   if (data.view === 'entry-list') {
-    $entryListdiv.classList.remove('hidden');
-    $entryFormdiv.classList.add('hidden');
+    setViewToList();
   } else if (data.view === 'entry-form') {
-    $entryFormdiv.classList.remove('hidden');
-    $entryListdiv.classList.add('hidden');
+    setViewToForm();
+    if (data.editing) {
+      $deleteEntryButton.classList.remove('hidden');
+    }
   }
 });
+
+function appendNothingHereDOM(parent) {
+  const $nothinghere = document.createElement('li');
+  $nothinghere.textContent = 'No entries have been recorded.';
+  $nothinghere.className = 'centered-text nothing-here';
+  parent.appendChild($nothinghere);
+}
 
 const $entryFormLabel = document.querySelector('.entry-form-label');
 const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
 const $entryListdiv = document.querySelector('div[data-view=entries]');
 const $entryAnchor = document.querySelector('.entry-anchor');
+
 $entryAnchor.addEventListener('click', function (e) {
   e.preventDefault();
-  setScreenEntryList();
+  setViewToList();
 });
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
-  setScreenEntryForm();
+  setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
+  $deleteEntryButton.classList.add('hidden');
+  data.editing = null;
+  $entryForm.reset();
+  $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
 });
 
-function setScreenEntryForm() {
+function setViewToForm() {
   data.view = 'entry-form';
   $entryFormdiv.classList.remove('hidden');
   $entryListdiv.classList.add('hidden');
 }
 
-function setScreenEntryList() {
+function setViewToList() {
   data.view = 'entry-list';
   $entryListdiv.classList.remove('hidden');
   $entryFormdiv.classList.add('hidden');
 }
 
+// on clicking the edit pencil
 $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
-    setScreenEntryForm();
+    setViewToForm();
+    
     const dataID = +e.target.getAttribute('data-entry-id');
 
     for (const ent of data.entries) {
@@ -197,5 +207,46 @@ $entryListdiv.addEventListener('click', function (e) {
     $photoPreview.setAttribute('src', data.editing.photoURL);
 
     $entryFormLabel.textContent = 'Edit Entry';
+    $deleteEntryButton.classList.remove('hidden');
   }
+});
+
+const $deleteEntryButton = document.querySelector('.delete-entry-button');
+$deleteEntryButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  modalVisibilitySwitch();
+});
+
+let popupStatus = false;
+const $modal = document.querySelector('.modal');
+
+function modalVisibilitySwitch() {
+  popupStatus = !popupStatus;
+  if (popupStatus === true) {
+    $modal.className = 'modal blur';
+  } else {
+    $modal.className = 'modal';
+  }
+}
+
+const $modalYesSelect = document.querySelector('.modal-yes-select');
+const $modalNoSelect = document.querySelector('.modal-no-select');
+
+$modalYesSelect.addEventListener('click', function (e) {
+  const goodobj = data.entries.filter(obj => { return obj.entryId === data.editing.entryId; })[0];
+  // remove from dom
+  getElementFromObject(goodobj).remove();
+  // update the object model
+  data.entries = data.entries.filter(obj => { return obj.entryId !== data.editing.entryId; });
+  data.editing = null;
+  modalVisibilitySwitch();
+  setViewToList();
+
+  if (!data.entries.length) {
+    appendNothingHereDOM($entryList);
+  }
+});
+
+$modalNoSelect.addEventListener('click', function (e) {
+  modalVisibilitySwitch();
 });

@@ -25,9 +25,13 @@ html {
   width: 100%;
 }
 
+/* anything directly after this element will be placed to the left.
+   it's a bit of a misnomer but i'll get around to renaming it soon */
 .justify-right {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .justify-space-between {
