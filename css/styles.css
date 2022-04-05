@@ -20,7 +20,8 @@ img {
 input,
 textarea {
   width: 100%;
-  margin-top: 0.4rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.8rem;
 }
 
 .entry-save {
@@ -52,16 +53,15 @@ h3 {
 label {
   height: auto;
   display: inline-block;
-  margin: 1.5rem 0 0;
+  margin: 0 0 1rem;
   width: 100%;
 }
 
 button {
   background-color: #562b81;
   color: white;
-  padding: 0.4rem 0.8rem;
-  margin-top: 1rem;
-  margin-bottom: 1.5rem;
+  padding: 0.5rem 0.8rem;
+  align-self: center;
   border-radius: 6px;
   border-style: none;
   letter-spacing: 0.03rem;
@@ -101,7 +101,7 @@ textarea {
 }
 
 .modalcontent {
-  padding: 1.2rem 2.7rem 0.1rem;
+  padding: 1.6rem 2.6rem;
   background-color: white;
   border-radius: 6px;
   width: fit-content;
@@ -136,4 +136,8 @@ textarea {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.entry-view-container {
+  margin: 0;
 }
