@@ -163,6 +163,7 @@ const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
   setScreenEntryForm();
   $entryFormLabel.textContent = 'New Entry';
+
 });
 
 function setScreenEntryForm() {
@@ -195,5 +196,6 @@ $entryListdiv.addEventListener('click', function (e) {
     $photoPreview.setAttribute('src', data.editing.photoURL);
 
     $entryFormLabel.textContent = 'Edit Entry';
+
   }
 });
