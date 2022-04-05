@@ -141,6 +141,7 @@ window.addEventListener('DOMContentLoaded', function (e) {
   }
   if (data.editing) {
     $entryFormLabel.textContent = 'Edit Entry';
+    $photoPreview.setAttribute('src', data.editing.photoURL);
   }
   if (data.view === 'entry-list') {
     $entryListdiv.classList.remove('hidden');
