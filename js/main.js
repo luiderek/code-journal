@@ -21,9 +21,21 @@ $entryForm.addEventListener('submit', function (e) {
 
   data.nextEntryId++;
   data.entries.unshift(entryObj);
+  $entryList.prepend(entryToDOM(entryObj));
+
+  const $nothinghere = document.querySelector('.nothing-here');
+  if (data.entries.length === 1) {
+    if ($nothinghere) {
+      $nothinghere.remove();
+    }
+  }
 
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   $entryForm.reset();
+
+  $entryListdiv.classList.remove('hidden');
+  $entryFormdiv.classList.add('hidden');
+  data.view = 'entry-list';
 });
 
 function entryToDOM(entry) {
@@ -68,7 +80,38 @@ function entryToDOM(entry) {
 const $entryList = document.querySelector('.entry-view-container');
 
 window.addEventListener('DOMContentLoaded', function (e) {
-  for (const eachentry of data.entries) {
-    $entryList.appendChild(entryToDOM(eachentry));
+  if (data.entries.length) {
+    for (const eachentry of data.entries) {
+      $entryList.appendChild(entryToDOM(eachentry));
+    }
+  } else {
+    const $nothinghere = document.createElement('li');
+    $nothinghere.textContent = 'No entries have been recorded.';
+    $nothinghere.className = 'centered-text nothing-here';
+    $entryList.appendChild($nothinghere);
   }
+  if (data.view === 'entry-list') {
+    $entryListdiv.classList.remove('hidden');
+    $entryFormdiv.classList.add('hidden');
+  } else if (data.view === 'entry-form') {
+    $entryFormdiv.classList.remove('hidden');
+    $entryListdiv.classList.add('hidden');
+  }
+});
+
+const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
+const $entryListdiv = document.querySelector('div[data-view=entries]');
+const $entryAnchor = document.querySelector('.entry-anchor');
+$entryAnchor.addEventListener('click', function (e) {
+  e.preventDefault();
+  data.view = 'entry-list';
+  $entryListdiv.classList.remove('hidden');
+  $entryFormdiv.classList.add('hidden');
+});
+
+const $newEntryButton = document.querySelector('button[name=new-entry]');
+$newEntryButton.addEventListener('click', function (e) {
+  data.view = 'entry-form';
+  $entryFormdiv.classList.remove('hidden');
+  $entryListdiv.classList.add('hidden');
 });

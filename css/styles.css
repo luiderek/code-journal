@@ -72,3 +72,18 @@ textarea {
   resize: none;
   height: 18vh;
 }
+
+.headlinks {
+  display: flex;
+}
+
+.headlinks a {
+  color: white;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.centered-text {
+  text-align: center;
+}
