@@ -10,7 +10,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
     integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400&family=Nanum+Gothic&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
@@ -24,48 +24,65 @@
 
     <header>
       <div class="row">
-        <div class="column-full">
+        <div class="column-full headlinks">
           <p>Code Journal</p>
+          <a href="" class="entry-anchor">Entries</a>
         </div>
       </div>
     </header>
 
     <main>
-      <div data-view="entry-form">
+      <div data-view="entry-form" class="">
         <div class="row">
           <div class="column-full">
-            <h3>New Entry</h3>
+            <h2>New Entry</h2>
           </div>
         </div>
         <div class="row">
-          <img class="photo-preview column-half" src="./images/placeholder-image-square.jpg" alt="picture of user url">
-          <form action="#" method="get" class="column-half">
-            <div>
-              <label for="title">Title<br>
-                <input type="text" name="title" required>
-              </label>
-            </div>
+          <form action="#" method="get" class="column-full">
+            <div class="row">
+              <img class="photo-preview column-half" src="./images/placeholder-image-square.jpg"
+                alt="picture of user url">
+              <div class="column-half">
+                <div>
+                  <label for="title">Title<br>
+                    <input type="text" name="title" required>
+                  </label>
+                </div>
 
-            <div>
-              <label for="photoURL"> Photo URL<br>
-                <input type="url" name="photoURL" required>
-              </label>
-            </div>
-        </div>
-
-        <div class="row">
-          <div class="column-full">
-            <div>
-              <label for="notes"> Notes</label>
-              <textarea name="notes" id="notes" cols="30" required></textarea>
-              <br>
-              <div class="justify-right">
-                <button name="entry-save">SAVE</button>
+                <div>
+                  <label for="photoURL"> Photo URL<br>
+                    <input type="url" name="photoURL" required>
+                  </label>
+                </div>
               </div>
-              </form>
             </div>
+
+            <div class="row">
+              <div class="column-full">
+                <div>
+                  <label for="notes"> Notes</label>
+                  <textarea name="notes" id="notes" cols="30" required></textarea>
+                  <br>
+                  <div class="justify-right">
+                    <button name="entry-save">SAVE</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div data-view="entries" class="hidden">
+        <div class="row entry-view">
+          <div class="column-full justify-space-between">
+            <h2>Entries</h2>
+            <button name="new-entry">NEW</button>
           </div>
         </div>
+        <ul class="entry-view-container">
+        </ul>
       </div>
     </main>
   </div>

@@ -28,6 +28,22 @@ textarea {
   color: white;
 }
 
+p {
+  line-height: 1.6;
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+}
+
+h3 {
+  padding: 0;
+}
+
 .container header p {
   margin: 0;
   padding: 0.7rem 1.5rem;
@@ -55,4 +71,19 @@ button {
 textarea {
   resize: none;
   height: 18vh;
+}
+
+.headlinks {
+  display: flex;
+}
+
+.headlinks a {
+  color: white;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.centered-text {
+  text-align: center;
 }
