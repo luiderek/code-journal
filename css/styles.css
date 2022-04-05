@@ -7,7 +7,6 @@
   color: white;
   font-family: "Nanum Gothic", Arial, sans-serif;
 
-  /* negative margins to grow the element */
   margin-left: -1.5rem;
   margin-right: -1.5rem;
 }
@@ -130,4 +129,8 @@ textarea {
 .modalcontent > h2 {
   font-size: 100%;
   font-family: sans-serif;
+
+.fa-pen {
+  color: #562b81;
+  margin: -0.2rem 0.2rem 0 0;
 }

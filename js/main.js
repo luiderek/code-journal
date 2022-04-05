@@ -50,6 +50,7 @@ $entryForm.addEventListener('submit', function (e) {
   $entryForm.reset();
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
   setViewToList();
+  setScreenEntryList();
 });
 
 function entryToDOM(entry) {
@@ -171,6 +172,7 @@ $entryAnchor.addEventListener('click', function (e) {
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
 $newEntryButton.addEventListener('click', function (e) {
+
   setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
   $deleteEntryButton.classList.add('hidden');
@@ -196,6 +198,7 @@ $entryListdiv.addEventListener('click', function (e) {
 
   if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
     setViewToForm();
+    
     const dataID = +e.target.getAttribute('data-entry-id');
 
     for (const ent of data.entries) {
