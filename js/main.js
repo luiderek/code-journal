@@ -272,9 +272,21 @@ $searchBar.addEventListener('input', function (e) {
 function entryListFilterDOM(searchTerm) {
   entryListClearDOM();
 
+  // if (data.entries.length) {
+  //   for (const entry of data.entries) {
+  //     if (entry.title.includes(searchTerm) || entry.notes.includes(searchTerm)) {
+  //       $entryList.appendChild(entryToDOM(entry));
+  //     }
+  //   }
+  // }
+
+  const splitSearch = searchTerm.toLowerCase().split(' ');
+
   if (data.entries.length) {
     for (const entry of data.entries) {
-      if (entry.title.includes(searchTerm) || entry.notes.includes(searchTerm)) {
+      let targetString = entry.title + ' ' + entry.notes;
+      targetString = targetString.toLowerCase();
+      if (splitSearch.every(term => targetString.includes(term))) {
         $entryList.appendChild(entryToDOM(entry));
       }
     }
@@ -287,9 +299,9 @@ function createDummyEntry(num) {
     const x = Math.floor(Math.random() * 100) + 700;
 
     const entryObj = {
-      title: 'test title of some sort',
+      title: 'dummy entry number ' + (x - 700),
       photoURL: 'https://picsum.photos/' + x,
-      notes: 'lorem ipsoom notes notes notes notes notes notes notes notes notes notes notes notes ',
+      notes: 'lorem ipsoom notes notes notes notes notes notes notes notes notes notes notes notes',
       entryId: data.nextEntryId
     };
 
