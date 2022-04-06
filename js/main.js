@@ -103,6 +103,12 @@ function entryToDOM(entry) {
   //   </div>
   // </li>
 
+  // <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
+  //   data-setup="{}">
+  //   <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4" />
+  //   <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/webm" />
+  // </video>
+
   const $li = document.createElement('li');
   $li.classList.add('entry-list-element');
   $li.setAttribute('data-entryID', entry.entryId + '');
@@ -110,13 +116,25 @@ function entryToDOM(entry) {
   const $divRMb = document.createElement('div');
   $divRMb.classList.add('row', 'margin-bot', 'justify-space-between');
 
-  const $img = document.createElement('img');
-  $img.setAttribute('src', entry.photoURL);
-
   const $divch1 = document.createElement('div');
   $divch1.classList.add('column-half');
   const $divch2 = document.createElement('div');
   $divch2.classList.add('column-half');
+
+  if (entry.photoURL.slice(-3) === 'mp4') {
+    const $img = document.createElement('video');
+    $img.classList.add('video-js', 'vjs-fluid', 'vjs-big-play-centered');
+    $img.setAttribute('data-setup', '{ "controls": true, "picture_in_picture_control": false, "fluid": true}');
+    const $source = document.createElement('source');
+    $source.setAttribute('src', entry.photoURL);
+    $source.setAttribute('type', 'video/mp4');
+    $img.appendChild($source);
+    $divch1.appendChild($img);
+  } else {
+    const $img = document.createElement('img');
+    $img.setAttribute('src', entry.photoURL);
+    $divch1.appendChild($img);
+  }
 
   const $divRjsb = document.createElement('div');
   $divRjsb.classList.add('row', 'justify-space-between');
@@ -133,7 +151,6 @@ function entryToDOM(entry) {
 
   $li.appendChild($divRMb);
   $divRMb.appendChild($divch1);
-  $divch1.appendChild($img);
   $divRMb.appendChild($divch2);
   $divch2.appendChild($divRjsb);
   $divRjsb.appendChild($h3);
@@ -271,14 +288,6 @@ $searchBar.addEventListener('input', function (e) {
 
 function entryListFilterDOM(searchTerm) {
   entryListClearDOM();
-
-  // if (data.entries.length) {
-  //   for (const entry of data.entries) {
-  //     if (entry.title.includes(searchTerm) || entry.notes.includes(searchTerm)) {
-  //       $entryList.appendChild(entryToDOM(entry));
-  //     }
-  //   }
-  // }
 
   const splitSearch = searchTerm.toLowerCase().split(' ');
 
