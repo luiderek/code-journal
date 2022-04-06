@@ -263,6 +263,24 @@ $modalNoSelect.addEventListener('click', function (e) {
   modalVisibilitySwitch();
 });
 
+// SEARCHBAR
+const $searchBar = document.querySelector('input[id=searchbar]');
+$searchBar.addEventListener('input', function (e) {
+  entryListFilterDOM(e.target.value);
+});
+
+function entryListFilterDOM(searchTerm) {
+  entryListClearDOM();
+
+  if (data.entries.length) {
+    for (const entry of data.entries) {
+      if (entry.title.includes(searchTerm) || entry.notes.includes(searchTerm)) {
+        $entryList.appendChild(entryToDOM(entry));
+      }
+    }
+  }
+}
+
 // eslint-disable-next-line no-unused-vars
 function createDummyEntry(num) {
   while (num--) {
