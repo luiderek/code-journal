@@ -11,7 +11,7 @@ html {
   max-width: 575px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.5rem 4vh;
   background-color: #f0f0f0;
 }
 
