@@ -121,13 +121,17 @@ function entryToDOM(entry) {
   const $divch2 = document.createElement('div');
   $divch2.classList.add('column-half');
 
-  if (entry.photoURL.slice(-3) === 'mp4') {
+  if (entry.photoURL.slice(-3) === 'mp4' || entry.photoURL.slice(-4) === 'webm') {
     const $img = document.createElement('video');
     $img.classList.add('video-js', 'vjs-fluid', 'vjs-big-play-centered');
     $img.setAttribute('data-setup', '{ "controls": true, "picture_in_picture_control": false, "fluid": true}');
     const $source = document.createElement('source');
     $source.setAttribute('src', entry.photoURL);
-    $source.setAttribute('type', 'video/mp4');
+    if (entry.photoURL.slice(-3) === 'mp4') {
+      $source.setAttribute('type', 'video/mp4');
+    } else {
+      $source.setAttribute('type', 'video/webm');
+    }
     $img.appendChild($source);
     $divch1.appendChild($img);
   } else {
