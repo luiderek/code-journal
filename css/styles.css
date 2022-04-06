@@ -141,3 +141,10 @@ textarea {
 .entry-view-container {
   margin: 0;
 }
+
+.headlinks > input {
+  margin-left: auto;
+  width: auto;
+  margin-block: auto;
+  margin-right: 2rem;
+}
