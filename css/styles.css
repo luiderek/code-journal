@@ -212,3 +212,13 @@ input:checked + .slider::before {
 .slider.round::before {
   border-radius: 50%;
 }
+
+.entry-view-container.grid-mode-on {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  gap: 2em;
+}
+
+.container.container-grow {
+  max-width: none;
+}

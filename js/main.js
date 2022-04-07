@@ -21,6 +21,11 @@ window.addEventListener('DOMContentLoaded', function (e) {
     $photoPreview.setAttribute('src', data.editing.photoURL);
   }
 
+  if (data.altLayout === true) {
+    $container.classList.toggle('container-grow');
+    $entryViewContainer.classList.toggle('grid-mode-on');
+  }
+
   if (data.view === 'entry-list') {
     setViewToList();
   } else if (data.view === 'entry-form') {
@@ -308,8 +313,12 @@ function entryListFilterDOM(searchTerm) {
 
 // ALT LAYOUT
 const $slideToggle = document.querySelector('#layout-toggle');
+const $container = document.querySelector('.container');
+const $entryViewContainer = document.querySelector('.entry-view-container');
 $slideToggle.addEventListener('click', function (e) {
   data.altLayout = !data.altLayout;
+  $container.classList.toggle('container-grow');
+  $entryViewContainer.classList.toggle('grid-mode-on');
 });
 
 // eslint-disable-next-line no-unused-vars
