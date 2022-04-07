@@ -5,7 +5,8 @@ var data = {
   entries: [],
   editing: null,
   nextEntryId: 1,
-  modalLive: false
+  modalLive: false,
+  altLayout: false
 };
 
 const previousDataJSON = localStorage.getItem('javascript-local-storage');

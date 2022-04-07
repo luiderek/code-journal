@@ -306,6 +306,12 @@ function entryListFilterDOM(searchTerm) {
   }
 }
 
+// ALT LAYOUT
+const $slideToggle = document.querySelector('#layout-toggle');
+$slideToggle.addEventListener('click', function (e) {
+  data.altLayout = !data.altLayout;
+});
+
 // eslint-disable-next-line no-unused-vars
 function createDummyEntry(num) {
   while (num--) {
