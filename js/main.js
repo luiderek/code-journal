@@ -58,10 +58,11 @@ $entryForm.addEventListener('submit', function (e) {
     data.editing = null;
   } else {
     const entryObj = {
+      entryId: data.nextEntryId,
       title: e.target.title.value,
       photoURL: e.target.photoURL.value,
       notes: e.target.notes.value,
-      entryId: data.nextEntryId
+      tags: []
     };
 
     data.nextEntryId++;

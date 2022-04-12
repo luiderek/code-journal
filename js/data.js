@@ -29,3 +29,12 @@ function resetDataObject() {
     modalLive: false
   };
 }
+
+// for reference
+// const entryObj = {
+//   entryId: data.nextEntryId,
+//   title: e.target.title.value,
+//   photoURL: e.target.photoURL.value,
+//   notes: e.target.notes.value,
+//   tags: []
+// };
