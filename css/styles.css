@@ -222,3 +222,23 @@ input:checked + .slider::before {
 .container.container-grow {
   max-width: none;
 }
+
+.tag-container input {
+  width: 25%;
+}
+
+.tag-list span {
+  display: inline-block;
+  font-size: 60%;
+  margin-inline: 0.2rem;
+  border-radius: 5px;
+  background-color: #f5b3ee;
+  padding: 0.3rem 0.5rem;
+  transition-duration: 0.2s;
+}
+
+.tag-list span:hover {
+  text-decoration: line-through;
+  background-color: #e43838;
+  transition-duration: 0.2s;
+}
