@@ -227,7 +227,7 @@ input:checked + .slider::before {
   width: 25%;
 }
 
-.tag-list span {
+.tag-list-edit span {
   display: inline-block;
   font-size: 60%;
   margin-inline: 0.2rem;
@@ -235,9 +235,10 @@ input:checked + .slider::before {
   background-color: #f5b3ee;
   padding: 0.3rem 0.5rem;
   transition-duration: 0.2s;
+  user-select: none;
 }
 
-.tag-list span:hover {
+.tag-list-edit span:hover {
   text-decoration: line-through;
   background-color: #e43838;
   transition-duration: 0.2s;

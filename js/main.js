@@ -7,7 +7,7 @@ const $entryFormLabel = document.querySelector('.entry-form-label');
 const $entryFormdiv = document.querySelector('div[data-view=entry-form]');
 const $entryListdiv = document.querySelector('div[data-view=entries]');
 
-window.addEventListener('DOMContentLoaded', function (e) {
+window.addEventListener('DOMContentLoaded', function (event) {
   if (data.entries.length) {
     for (const entry of data.entries) {
       $entryList.appendChild(entryToDOM(entry));
@@ -37,18 +37,18 @@ window.addEventListener('DOMContentLoaded', function (e) {
 });
 
 const $photoPreview = document.querySelector('.photo-preview');
-$photoURL.addEventListener('input', function (e) {
-  $photoPreview.setAttribute('src', e.target.value);
+$photoURL.addEventListener('input', function (event) {
+  $photoPreview.setAttribute('src', event.target.value);
 });
 
 const $entryForm = document.querySelector('div[data-view=entry-form] form');
-$entryForm.addEventListener('submit', function (e) {
-  e.preventDefault();
+$entryForm.addEventListener('submit', function (event) {
+  event.preventDefault();
 
   if (data.editing) {
-    data.editing.title = e.target.title.value;
-    data.editing.photoURL = e.target.photoURL.value;
-    data.editing.notes = e.target.notes.value;
+    data.editing.title = event.target.title.value;
+    data.editing.photoURL = event.target.photoURL.value;
+    data.editing.notes = event.target.notes.value;
 
     // brute force re-rendering all brain fried, can't think.
     for (const entry of data.entries) {
@@ -59,9 +59,9 @@ $entryForm.addEventListener('submit', function (e) {
   } else {
     const entryObj = {
       entryId: data.nextEntryId,
-      title: e.target.title.value,
-      photoURL: e.target.photoURL.value,
-      notes: e.target.notes.value,
+      title: event.target.title.value,
+      photoURL: event.target.photoURL.value,
+      notes: event.target.notes.value,
       tags: []
     };
 
@@ -76,13 +76,13 @@ $entryForm.addEventListener('submit', function (e) {
 });
 
 const $entryAnchor = document.querySelector('.entry-anchor');
-$entryAnchor.addEventListener('click', function (e) {
-  e.preventDefault();
+$entryAnchor.addEventListener('click', function (event) {
+  event.preventDefault();
   setViewToList();
 });
 
 const $newEntryButton = document.querySelector('button[name=new-entry]');
-$newEntryButton.addEventListener('click', function (e) {
+$newEntryButton.addEventListener('click', function (event) {
   setViewToForm();
   $entryFormLabel.textContent = 'New Entry';
   $deleteEntryButton.classList.add('hidden');
@@ -230,10 +230,10 @@ function removeNothings() {
 }
 
 // on clicking the edit pencil
-$entryListdiv.addEventListener('click', function (e) {
-  if (e.target.getAttribute('class') && e.target.getAttribute('class').includes('fa-pen')) {
+$entryListdiv.addEventListener('click', function (event) {
+  if (event.target.getAttribute('class') && event.target.getAttribute('class').includes('fa-pen')) {
     setViewToForm();
-    const dataID = +e.target.getAttribute('data-entry-id');
+    const dataID = +event.target.getAttribute('data-entry-id');
 
     for (const entry of data.entries) {
       if (entry.entryId === dataID) {
@@ -252,8 +252,8 @@ $entryListdiv.addEventListener('click', function (e) {
 });
 
 const $deleteEntryButton = document.querySelector('.delete-entry-button');
-$deleteEntryButton.addEventListener('click', function (e) {
-  e.preventDefault();
+$deleteEntryButton.addEventListener('click', function (event) {
+  event.preventDefault();
   modalVisibilitySwitch();
 });
 
@@ -292,8 +292,8 @@ $modalNoSelect.addEventListener('click', function (e) {
 
 // SEARCHBAR
 const $searchBar = document.querySelector('input[id=searchbar]');
-$searchBar.addEventListener('input', function (e) {
-  entryListFilterDOM(e.target.value);
+$searchBar.addEventListener('input', function (event) {
+  entryListFilterDOM(event.target.value);
 });
 
 function entryListFilterDOM(searchTerm) {
@@ -316,10 +316,24 @@ function entryListFilterDOM(searchTerm) {
 const $slideToggle = document.querySelector('#layout-toggle');
 const $container = document.querySelector('.container');
 const $entryViewContainer = document.querySelector('.entry-view-container');
-$slideToggle.addEventListener('click', function (e) {
+$slideToggle.addEventListener('click', function (event) {
   data.altLayout = !data.altLayout;
   $container.classList.toggle('container-grow');
   $entryViewContainer.classList.toggle('grid-mode-on');
+});
+
+// TAGS
+const $tagList = document.querySelector('.tag-list-edit');
+$tagList.addEventListener('click', function (event) {
+  // so HTMLCollection didn't have what I wanted
+  // array methods don't let me down
+  if ([...$tagList.children].includes(event.target)) {
+    // execute button code
+    // need to update the data object (by deleting)
+    // need a seperate tag-domifier function
+    // need to re-render existing tags
+  }
+  // console.log('event.target:', event.target);
 });
 
 // eslint-disable-next-line no-unused-vars
