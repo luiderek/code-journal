@@ -3,6 +3,7 @@
 var data = {
   view: 'entry-form',
   entries: [],
+  currentTags: [],
   editing: null,
   nextEntryId: 1,
   modalLive: false,
@@ -24,9 +25,11 @@ function resetDataObject() {
   data = {
     view: 'entry-form',
     entries: [],
+    currentTags: [],
     editing: null,
     nextEntryId: 1,
-    modalLive: false
+    modalLive: false,
+    altLayout: false
   };
 }
 

@@ -30,6 +30,7 @@ window.addEventListener('DOMContentLoaded', function (event) {
     setViewToList();
   } else if (data.view === 'entry-form') {
     setViewToForm();
+    tagListRefreshDOM();
     if (data.editing) {
       $deleteEntryButton.classList.remove('hidden');
     }
@@ -62,11 +63,12 @@ $entryForm.addEventListener('submit', function (event) {
       title: event.target.title.value,
       photoURL: event.target.photoURL.value,
       notes: event.target.notes.value,
-      tags: []
+      tags: data.currentTags
     };
 
     data.nextEntryId++;
     data.entries.unshift(entryObj);
+    data.currentTags = [];
     $entryList.prepend(entryToDOM(entryObj));
     removeNothings();
   }
@@ -88,6 +90,8 @@ $newEntryButton.addEventListener('click', function (event) {
   $deleteEntryButton.classList.add('hidden');
   data.editing = null;
   $entryForm.reset();
+  data.currentTags = [];
+  tagListRefreshDOM();
   $photoPreview.setAttribute('src', './images/placeholder-image-square.jpg');
 });
 
@@ -238,8 +242,12 @@ $entryListdiv.addEventListener('click', function (event) {
     for (const entry of data.entries) {
       if (entry.entryId === dataID) {
         data.editing = entry;
+        data.currentTags = entry.tags;
       }
     }
+    // okay i'm not sure how to select the right object from here.
+    // i already selected the right object earlier, just needed to piggyback that code.
+    tagListRefreshDOM();
 
     $entryForm.title.value = data.editing.title;
     $entryForm.photoURL.value = data.editing.photoURL;
@@ -328,7 +336,9 @@ $tagList.addEventListener('click', function (event) {
   // so HTMLCollection didn't have what I wanted
   // array methods don't let me down
   if ([...$tagList.children].includes(event.target)) {
-    event.target.remove();
+    const tagindex = data.currentTags.indexOf(event.target.textContent);
+    data.currentTags.splice(tagindex, 1);
+    tagListRefreshDOM();
     // need to update the data object (by deleting)
     // need a seperate tag-domifier function
     // need to re-render existing tags
@@ -340,15 +350,29 @@ const $tagInput = document.querySelector('.tag-list-input');
 $tagInput.addEventListener('keydown', function (event) {
   // if keydown is enter
   if (event.which === 13) {
-    // so enter should edit an internal data object
-    // and based on the object the taglist will re-render
-    const $newTag = document.createElement('span');
-    $newTag.textContent = event.target.value;
-    $tagList.appendChild($newTag);
-    event.target.value = '';
+    if (event.target.value.split(' ').join('')) {
+      data.currentTags.push(event.target.value.split(' ').join(''));
+      data.currentTags = [...new Set(data.currentTags)];
+      // for some reason data.current tags doesn't maintain its set-iness
+      // on refresh so i'm settling for keeping values as an array
+      // but filtering for uniqueness / cleaning up spaces before entering
+      // might be computationally bad but unsure of workaround.
+      tagListRefreshDOM();
+      event.target.value = '';
+    }
   }
-  // NTS tags oughta be unique. use a set.
 });
+
+function tagListRefreshDOM() {
+  while ($tagList.firstChild) {
+    $tagList.removeChild($tagList.firstChild);
+  }
+  for (const tag of data.currentTags) {
+    const $newTag = document.createElement('span');
+    $newTag.textContent = tag;
+    $tagList.appendChild($newTag);
+  }
+}
 
 // eslint-disable-next-line no-unused-vars
 function createDummyEntry(num) {
