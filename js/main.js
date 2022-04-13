@@ -328,12 +328,26 @@ $tagList.addEventListener('click', function (event) {
   // so HTMLCollection didn't have what I wanted
   // array methods don't let me down
   if ([...$tagList.children].includes(event.target)) {
-    // execute button code
+    event.target.remove();
     // need to update the data object (by deleting)
     // need a seperate tag-domifier function
     // need to re-render existing tags
   }
   // console.log('event.target:', event.target);
+});
+
+const $tagInput = document.querySelector('.tag-list-input');
+$tagInput.addEventListener('keydown', function (event) {
+  // if keydown is enter
+  if (event.which === 13) {
+    // so enter should edit an internal data object
+    // and based on the object the taglist will re-render
+    const $newTag = document.createElement('span');
+    $newTag.textContent = event.target.value;
+    $tagList.appendChild($newTag);
+    event.target.value = '';
+  }
+  // NTS tags oughta be unique. use a set.
 });
 
 // eslint-disable-next-line no-unused-vars

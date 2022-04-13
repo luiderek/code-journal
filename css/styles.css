@@ -223,6 +223,8 @@ input:checked + .slider::before {
   max-width: none;
 }
 
+/* tags */
+
 .tag-container input {
   width: 25%;
 }
