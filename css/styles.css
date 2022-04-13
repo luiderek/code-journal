@@ -240,6 +240,16 @@ input:checked + .slider::before {
   user-select: none;
 }
 
+.tag-list-view span {
+  display: inline-block;
+  font-size: 60%;
+  margin-inline: 0.2rem;
+  border-radius: 5px;
+  background-color: #f5b3ee;
+  padding: 0.3rem 0.5rem;
+  user-select: none;
+}
+
 .tag-list-edit span:hover {
   text-decoration: line-through;
   background-color: #e43838;

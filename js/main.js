@@ -51,6 +51,13 @@ $entryForm.addEventListener('submit', function (event) {
     data.editing.photoURL = event.target.photoURL.value;
     data.editing.notes = event.target.notes.value;
 
+    for (const entry of data.entries) {
+      if (entry.entryId === data.editing.entryId) {
+        entry.tags = data.currentTags;
+      }
+    }
+    data.currentTags = [];
+
     // brute force re-rendering all brain fried, can't think.
     for (const entry of data.entries) {
       updateEntry(entry);
@@ -111,6 +118,11 @@ function entryToDOM(entry) {
   //         officia qui, ut veniam dolores! Iure, ea.</p>
   //     </div>
   //   </div>
+  //  div.row
+  //    div.column-full
+  //      span.tag-list-view
+  //     /div
+  //  /div
   // </li>
 
   // <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
@@ -124,7 +136,7 @@ function entryToDOM(entry) {
   $li.setAttribute('data-entryID', entry.entryId + '');
 
   const $divRMb = document.createElement('div');
-  $divRMb.classList.add('row', 'margin-bot', 'justify-space-between');
+  $divRMb.classList.add('row', 'justify-space-between');
 
   const $divch1 = document.createElement('div');
   $divch1.classList.add('column-half');
@@ -170,6 +182,29 @@ function entryToDOM(entry) {
   $divRjsb.appendChild($h3);
   $divRjsb.appendChild($i);
   $divch2.appendChild($p);
+
+  //  div.row
+  //    div.column-full
+  //      span.tag-list-view
+  //     /div
+  //  /div
+
+  const $divTagRow = document.createElement('div');
+  $divTagRow.className = 'row margin-bot';
+  const $divTagCol = document.createElement('div');
+  $divTagCol.className = 'column-full';
+  const $spanTagView = document.createElement('span');
+  $spanTagView.className = 'tag-list-view';
+
+  $li.appendChild($divTagRow);
+  $divTagRow.appendChild($divTagCol);
+  $divTagCol.appendChild($spanTagView);
+
+  for (const tag of entry.tags) {
+    const $newTag = document.createElement('span');
+    $newTag.textContent = tag;
+    $spanTagView.appendChild($newTag);
+  }
 
   return $li;
 }
@@ -245,8 +280,6 @@ $entryListdiv.addEventListener('click', function (event) {
         data.currentTags = entry.tags;
       }
     }
-    // okay i'm not sure how to select the right object from here.
-    // i already selected the right object earlier, just needed to piggyback that code.
     tagListRefreshDOM();
 
     $entryForm.title.value = data.editing.title;
@@ -286,6 +319,7 @@ $modalYesSelect.addEventListener('click', function (e) {
   // update the object model
   data.entries = data.entries.filter(obj => { return obj.entryId !== data.editing.entryId; });
   data.editing = null;
+  data.currentTags = [];
   modalVisibilitySwitch();
   setViewToList();
 
