@@ -85,10 +85,32 @@
                     <a href="" class="delete-entry-button hidden">Delete Entry</a>
                   </div>
                 </div>
+
               </div>
             </div>
           </form>
         </div>
+
+        <!-- Ideally I'd want this on the half-col down by photoURL,
+             but my form element is wrapping the whole area, and I would have to
+             refactor layout which sounds like something I rather not break -->
+        <div class="row">
+          <div class="column-full">
+            <div class="tag-container">
+              <label for="add-tags"> tags:
+                <input class="tag-list-input" type="text" name="tag">
+                <span class="tag-list-edit">
+                  <span>spicy</span>
+                  <span>salty</span>
+                  <span>mild</span>
+                  <span>oily</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+
       </div>
 
       <div data-view="entries" class="hidden">
@@ -109,7 +131,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
-  <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
+  <!-- <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script> -->
 
 </body>
 
